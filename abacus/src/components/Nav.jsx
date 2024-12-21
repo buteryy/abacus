@@ -5,7 +5,7 @@ export default function Nav() {
     <nav >
     <ul class="navbar">
       <li><NavLink to="/">Home</NavLink></li>
-      <li><NavLink to="/abacuss-practice">Abacus Practice</NavLink></li>
+      <li><NavLink to="/abacus-practice">Abacus Practice</NavLink></li>
       <li><NavLink to="/mental-practice">Mental Practice</NavLink></li>
     </ul>
   </nav>
