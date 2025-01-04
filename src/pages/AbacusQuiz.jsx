@@ -50,7 +50,13 @@ export default function AbacusQuiz() {
             >
               <p>Ans:</p>
               <input
-                style={{ width: "50px", fontWeight: "bold" }}
+                style={{
+                  width: "50px",
+                  fontWeight: "bold",
+                  backgroundColor: "transparent",
+                  borderRadius: "10px",
+                  padding: "2px",
+                }}
                 onChange={(e) => setUserSolution(e.target.value)}
                 type="number"
                 placeholder="07"
