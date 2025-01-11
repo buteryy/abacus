@@ -40,6 +40,10 @@ export default function AbacusQuiz() {
   }
 
   function checkSolution(levelIndex) {
+    if (!levels[levelIndex].userSolution) {
+      setModalMessage("Please enter a number")
+      return
+    }
     setLevels((prevLevels) =>
       prevLevels.map((level, index) => {
         if (index === levelIndex) {
@@ -47,8 +51,12 @@ export default function AbacusQuiz() {
             parseInt(level.userSolution, 10) === level.correctAns
           setModalMessage(
             isCorrect
-              ? "Good Job, that was correct!"
-              : "Try again, it was close!"
+              ? `Good Job, that was correct!`
+              : `Try again, that was close!  ${
+                  parseInt(level.userSolution, 10) > level.correctAns
+                    ? "🔺"
+                    : "🔻"
+                }`
           )
           return { ...level, isCorrect }
         }
@@ -69,7 +77,7 @@ export default function AbacusQuiz() {
         {levels.map((level, index) => (
           <div className="box" key={level.level}>
             <div className="boxsm">
-              <p>{level.level}</p>
+              <p>#{level.level}</p>
             </div>
             <div>
               {level.numbers.map((num, idx) => (
