@@ -1,260 +1,142 @@
+import { useState, useEffect } from "react"
 import { useParams } from "react-router"
+import Modal from "../components/Modal"
 
 export default function AbacusQuiz() {
-  const {id} = useParams()
+  const { id } = useParams()
+  const [levels, setLevels] = useState(() => {
+    const savedLevels = localStorage.getItem("abacusQuizProgress")
+    return savedLevels ? JSON.parse(savedLevels) : generateLevels(10)
+  })
+  const [modalMessage, setModalMessage] = useState("") // Message for the modal
 
-  function getRandomNumber(digit) {
-    let multiplier = digit * 10
-    const randomNum = Math.floor(Math.random() * multiplier)
-    return randomNum
+  function getRandomNumber() {
+    return Math.floor(Math.random() * 100) + 1
   }
+
+  function generateLevels(totalLevels) {
+    const levelsArray = []
+    for (let i = 1; i <= totalLevels; i++) {
+      const nums = Array(4)
+        .fill(null)
+        .map(() => getRandomNumber())
+      levelsArray.push({
+        level: i,
+        numbers: nums,
+        correctAns: nums.reduce((sum, num) => sum + num, 0),
+        userSolution: "",
+        isCorrect: false,
+      })
+    }
+    return levelsArray
+  }
+
+  function handleInputChange(levelIndex, value) {
+    setLevels((prevLevels) =>
+      prevLevels.map((level, index) =>
+        index === levelIndex ? { ...level, userSolution: value } : level
+      )
+    )
+  }
+
+  function checkSolution(levelIndex) {
+    if (!levels[levelIndex].userSolution) {
+      setModalMessage("Please enter a number")
+      return
+    }
+    setLevels((prevLevels) =>
+      prevLevels.map((level, index) => {
+        if (index === levelIndex) {
+          const isCorrect =
+            parseInt(level.userSolution, 10) === level.correctAns
+          setModalMessage(
+            isCorrect
+              ? `Good Job, that was correct!`
+              : `Try again, that was close!  ${
+                  parseInt(level.userSolution, 10) > level.correctAns
+                    ? "🔺"
+                    : "🔻"
+                }`
+          )
+          return { ...level, isCorrect }
+        }
+        return level
+      })
+    )
+  }
+
+  // Save progress to localStorage whenever levels change
+  useEffect(() => {
+    localStorage.setItem("abacusQuizProgress", JSON.stringify(levels))
+  }, [levels])
 
   return (
     <>
-      <h1 class="main-heading">Level {id} Mental Practice</h1>
-
-      <div class="box-container">
-
-        <div class="box">
-          <div class="boxsm">
-            <p>1</p>
+      <h1 className="main-heading">Level {id} Mental Practice</h1>
+      <div className="box-container">
+        {levels.map((level, index) => (
+          <div className="box" key={level.level}>
+            <div className="boxsm">
+              <p>#{level.level}</p>
+            </div>
+            <div>
+              {level.numbers.map((num, idx) => (
+                <p key={idx}>{num}</p>
+              ))}
+            </div>
+            <div
+              className="boxsm answer-section"
+              style={{
+                backgroundColor: level.isCorrect ? "lightgreen" : "",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column",
+                gap: "10px",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "column",
+                }}
+              >
+                <input
+                  style={{
+                    width: "80px",
+                    fontWeight: "bold",
+                    fontSize: "1.1rem",
+                    backgroundColor: "transparent",
+                    borderRadius: "10px",
+                    padding: "5px",
+                  }}
+                  value={level.userSolution}
+                  onChange={(e) => handleInputChange(index, e.target.value)}
+                  type="number"
+                  placeholder="Answer"
+                  disabled={level.isCorrect} // Disable input if correct
+                />
+              </div>
+              <button
+                onClick={() => checkSolution(index)}
+                disabled={level.isCorrect} // Disable button if correct
+              >
+                Enter
+              </button>
+            </div>
           </div>
-          <div>
-            <p>42</p>
-            <p>87</p>
-            <p>98</p>
-            <p>36</p>
-          </div>
-          <div class="boxsm answer-section" >
-            <p>Ans:</p>
-            <input type="number" placeholder="07" />
-            <button>Enter</button>
-          </div>
-        </div>
-        <div class="box">
-          <div class="boxsm">
-            <p>2</p>
-          </div>
-          <div>
-            <p>42</p>
-            <p>87</p>
-            <p>98</p>
-            <p>36</p>
-          </div>
-          <div class="boxsm answer-section" >
-            <p>Ans:</p>
-            <p>234</p>
-          </div>
-        </div>
-        <div class="box">
-          <div class="boxsm">
-            <p>3</p>
-          </div>
-          <div>
-            <p>42</p>
-            <p>87</p>
-            <p>98</p>
-            <p>36</p>
-          </div>
-          <div class="boxsm answer-section" >
-            <p>Ans:</p>
-            <p>234</p>
-          </div>
-        </div>
-        <div class="box">
-          <div class="boxsm">
-            <p>4</p>
-          </div>
-          <div>
-            <p>42</p>
-            <p>87</p>
-            <p>98</p>
-            <p>36</p>
-          </div>
-          <div class="boxsm answer-section" >
-            <p>Ans:</p>
-            <p>234</p>
-          </div>
-        </div>
-        <div class="box">
-          <div class="boxsm">
-            <p>5</p>
-          </div>
-          <div>
-            <p>42</p>
-            <p>87</p>
-            <p>98</p>
-            <p>36</p>
-          </div>
-          <div class="boxsm answer-section" >
-            <p>Ans:</p>
-            <p>234</p>
-          </div>
-        </div>
-        <div class="box">
-          <div class="boxsm">
-            <p>6</p>
-          </div>
-          <div>
-            <p>42</p>
-            <p>87</p>
-            <p>98</p>
-            <p>36</p>
-          </div>
-          <div class="boxsm answer-section" >
-            <p>Ans:</p>
-            <p>234</p>
-          </div>
-        </div>
-        <div class="box">
-          <div class="boxsm">
-            <p>7</p>
-          </div>
-          <div>
-            <p>42</p>
-            <p>87</p>
-            <p>98</p>
-            <p>36</p>
-          </div>
-          <div class="boxsm answer-section" >
-            <p>Ans:</p>
-            <p>234</p>
-          </div>
-        </div>
-        <div class="box">
-          <div class="boxsm">
-            <p>8</p>
-          </div>
-          <div>
-            <p>42</p>
-            <p>87</p>
-            <p>98</p>
-            <p>36</p>
-          </div>
-          <div class="boxsm answer-section" >
-            <p>Ans:</p>
-            <p>234</p>
-          </div>
-        </div>
-        <div class="box">
-          <div class="boxsm">
-            <p>9</p>
-          </div>
-          <div>
-            <p>42</p>
-            <p>87</p>
-            <p>98</p>
-            <p>36</p>
-          </div>
-          <div class="boxsm answer-section" >
-            <p>Ans:</p>
-            <p>234</p>
-          </div>
-        </div>
-        <div class="box">
-          <div class="boxsm">
-            <p>10</p>
-          </div>
-          <div>
-            <p>42</p>
-            <p>87</p>
-            <p>98</p>
-            <p>36</p>
-          </div>
-          <div class="boxsm answer-section" >
-            <p>Ans:</p>
-            <p>234</p>
-          </div>
-        </div>
-        <div class="box">
-          <div class="boxsm">
-            <p>11</p>
-          </div>
-          <div>
-            <p>42</p>
-            <p>87</p>
-            <p>98</p>
-            <p>36</p>
-          </div>
-          <div class="boxsm answer-section" >
-            <p>Ans:</p>
-            <p>234</p>
-          </div>
-        </div>
-
-        <div class="box">
-          <div class="boxsm">
-            <p>12</p>
-          </div>
-          <div>
-            <p>42</p>
-            <p>87</p>
-            <p>98</p>
-            <p>36</p>
-          </div>
-          <div class="boxsm answer-section" >
-            <p>Ans:</p>
-            <p>234</p>
-          </div>
-        </div>
-
-        <div class="box">
-          <div class="boxsm">
-            <p>13</p>
-          </div>
-          <div>
-            <p>42</p>
-            <p>87</p>
-            <p>98</p>
-            <p>36</p>
-          </div>
-          <div class="boxsm answer-section" >
-            <p>Ans:</p>
-            <p>234</p>
-          </div>
-        </div>
-
-        <div class="box">
-          <div class="boxsm">
-            <p>14</p>
-          </div>
-          <div>
-            <p>42</p>
-            <p>87</p>
-            <p>98</p>
-            <p>36</p>
-          </div>
-          <div class="boxsm answer-section" >
-            <p>Ans:</p>
-            <p>234</p>
-          </div>
-        </div>
-        <div class="box">
-          <div class="boxsm">
-            <p>15</p>
-          </div>
-          <div>
-            <p>42</p>
-            <p>87</p>
-            <p>98</p>
-            <p>36</p>
-          </div>
-          <div class="boxsm answer-section" >
-            <p>Ans:</p>
-            <p>234</p>
-          </div>
-        </div>
-
-        
-
-      
+        ))}
       </div>
 
-
-
-
-
-
+      {/* Render the modal */}
+      {modalMessage && (
+        <Modal
+          message={modalMessage}
+          onClose={() => setModalMessage("")} // Close the modal
+        />
+      )}
     </>
   )
 }
