@@ -1,9 +1,14 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useParams } from "react-router"
+import Modal from "../components/Modal"
 
 export default function AbacusQuiz() {
   const { id } = useParams()
-  const [levels, setLevels] = useState(generateLevels(10)) // Dynamically generate levels
+  const [levels, setLevels] = useState(() => {
+    const savedLevels = localStorage.getItem("abacusQuizProgress")
+    return savedLevels ? JSON.parse(savedLevels) : generateLevels(10)
+  })
+  const [modalMessage, setModalMessage] = useState("") // Message for the modal
 
   function getRandomNumber() {
     return Math.floor(Math.random() * 100) + 1
@@ -19,8 +24,8 @@ export default function AbacusQuiz() {
         level: i,
         numbers: nums,
         correctAns: nums.reduce((sum, num) => sum + num, 0),
-        userSolution: "", // Independent user input for each level
-        isCorrect: false, // Tracks if the answer is correct
+        userSolution: "",
+        isCorrect: false,
       })
     }
     return levelsArray
@@ -40,17 +45,22 @@ export default function AbacusQuiz() {
         if (index === levelIndex) {
           const isCorrect =
             parseInt(level.userSolution, 10) === level.correctAns
-          if (isCorrect) {
-            alert("Good Job, that was correct!")
-          } else {
-            alert("Try again, it was close!")
-          }
+          setModalMessage(
+            isCorrect
+              ? "Good Job, that was correct!"
+              : "Try again, it was close!"
+          )
           return { ...level, isCorrect }
         }
         return level
       })
     )
   }
+
+  // Save progress to localStorage whenever levels change
+  useEffect(() => {
+    localStorage.setItem("abacusQuizProgress", JSON.stringify(levels))
+  }, [levels])
 
   return (
     <>
@@ -111,6 +121,14 @@ export default function AbacusQuiz() {
           </div>
         ))}
       </div>
+
+      {/* Render the modal */}
+      {modalMessage && (
+        <Modal
+          message={modalMessage}
+          onClose={() => setModalMessage("")} // Close the modal
+        />
+      )}
     </>
   )
 }
