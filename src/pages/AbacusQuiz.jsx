@@ -1,35 +1,117 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useParams } from "react-router"
 import Modal from "../components/Modal"
 
 export default function AbacusQuiz() {
   const { id } = useParams()
+  const timerRef = useRef(null); // Ref to store the timer ID
   const [levels, setLevels] = useState(() => {
-    const savedLevels = localStorage.getItem("abacusQuizProgress")
-    return savedLevels ? JSON.parse(savedLevels) : generateLevels(15)
+    // const savedLevels = localStorage.getItem("abacusQuizProgress")
+    // return savedLevels ? JSON.parse(savedLevels) : generateLevels(15)
+    return generateLevels(15)
   })
   const [modalMessage, setModalMessage] = useState("") // Message for the modal
+  const [time, setTime] = useState(600)
+  const [isTimerRunning, setIsTimerRunning] = useState(false)
+
+  // function handleTimer() {
+  //   clearInterval(timer)
+  //   setIsTimerRunning((prev) => !prev)
+  //   // Reset and clear the timer if it's already running
+  //   if (isTimerRunning) {
+  //     setTime(600)
+  //     return
+  //   }
+   
+  //   const timer = setInterval(() => {
+  //     setTime((prevTime) => {
+  //       if (prevTime === 0) {
+  //         clearInterval(timer)
+  //         setIsTimerRunning(false)
+  //         setModalMessage("Time's up! Please submit your answers.")
+  //         return 0
+  //       }
+  //       return prevTime - 1
+  //     })
+  //   }
+  //   , 1000)
+  // }
+
+  function handleTimer() {
+    if (isTimerRunning) {
+      // Stop the timer
+      clearInterval(timerRef.current);
+      timerRef.current = null; // Clear the ref
+      setIsTimerRunning(false);
+      setTime(600); // Reset the time to 10 minutes (optional)
+    } else {
+      // Start the timer
+      setIsTimerRunning(true);
+      timerRef.current = setInterval(() => {
+        setTime((prevTime) => {
+          if (prevTime === 0) {
+            clearInterval(timerRef.current); // Clear the timer
+            timerRef.current = null;
+            setIsTimerRunning(false);
+            setModalMessage("Time's up! Please submit your answers.");
+            return 0; // Stop at 0
+          }
+          return prevTime - 1;
+        });
+      }, 1000);
+    }
+  }
 
   function getRandomNumber() {
+    // getting random numbers based on the level / id
+    if (id == "7") return Math.floor(Math.random() * 10) + 1
+    if (id == "8") return Math.floor(Math.random() * 10) + 1
+    if (id == "9") return Math.floor(Math.random() * 10) + 1
+    if (id == "10") return Math.floor(Math.random() * 10) + 1
+
     return Math.floor(Math.random() * 100) + 1
   }
 
   function generateLevels(totalLevels) {
-    const levelsArray = []
+    const levelsArray = [];
+    let numOfProblems;
+  
+    if (id == "1") numOfProblems = 7;
+    if (id == "2") numOfProblems = 6;
+    if (id == "3") numOfProblems = 5;
+    if (id == "4") numOfProblems = 4;
+    if (id == "5") numOfProblems = 3;
+    if (id == "6") numOfProblems = 2;
+    if (id == "7") numOfProblems = 6;
+    if (id == "8") numOfProblems = 5;
+    if (id == "9") numOfProblems = 4;
+    if (id == "10") numOfProblems = 3;
+  
     for (let i = 1; i <= totalLevels; i++) {
-      const nums = Array(2)
+      const nums = Array(numOfProblems)
         .fill(null)
-        .map(() => getRandomNumber())
+        .map(() => (Math.random() > 0.70 ? -getRandomNumber() : getRandomNumber()));
+  
+      let sum = nums.reduce((acc, num) => acc + num, 0);
+  
+      // Adjust the last number if the sum is negative
+      if (sum < 0) {
+        nums[nums.length - 1] += Math.abs(sum);
+        sum = nums.reduce((acc, num) => acc + num, 0); // Recalculate to ensure it's positive
+      }
+
       levelsArray.push({
         level: i,
         numbers: nums,
-        correctAns: nums.reduce((sum, num) => sum + num, 0),
+        correctAns: sum, // The final sum should always be positive
         userSolution: "",
         isCorrect: null, // Use `null` to indicate unattempted levels
-      })
+      });
     }
-    return levelsArray
+  
+    return levelsArray;
   }
+  
 
   function handleInputChange(levelIndex, value) {
     setLevels((prevLevels) =>
@@ -52,13 +134,34 @@ export default function AbacusQuiz() {
   }
 
   // Save progress to localStorage whenever levels change
-  useEffect(() => {
-    localStorage.setItem("abacusQuizProgress", JSON.stringify(levels))
-  }, [levels])
+  // useEffect(() => {
+  //   localStorage.setItem("abacusQuizProgress", JSON.stringify(levels))
+  // }, [levels])
 
   return (
     <>
       <h1 className="main-heading">Level {id} Mental Practice</h1>
+      {/* Quiz Timer */}
+      <div className="quiz-timer">
+      <h2>
+        Time Remaining: {Math.floor(time / 60)} minutes {String(time % 60).padStart(2, '0')} seconds
+      </h2>
+        <button
+          onClick={handleTimer}
+        style={{
+          padding: "10px 20px",
+          backgroundColor: "#4CAF50",
+          color: "white",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer",
+          marginLeft: "10px",
+          marginTop: "20px",
+          cursor: "pointer"
+        }}>
+          {isTimerRunning ? "Stop & Reset Timer" : "Start Timer"}
+        </button>
+      </div>
       <div className="box-container">
         {levels.map((level, index) => (
           <div className="box" key={level.level}>
@@ -159,157 +262,3 @@ export default function AbacusQuiz() {
 
 
 
-
-// import { useState, useEffect } from "react"
-// import { useParams } from "react-router"
-// import Modal from "../components/Modal"
-
-// export default function AbacusQuiz() {
-//   const { id } = useParams()
-//   const [levels, setLevels] = useState(() => {
-//     const savedLevels = localStorage.getItem("abacusQuizProgress")
-//     return savedLevels ? JSON.parse(savedLevels) : generateLevels(10)
-//   })
-//   const [modalMessage, setModalMessage] = useState("") // Message for the modal
-
-//   function getRandomNumber() {
-//     return Math.floor(Math.random() * 100) + 1
-//   }
-
-//   function generateLevels(totalLevels) {
-//     const levelsArray = []
-//     for (let i = 1; i <= totalLevels; i++) {
-//       const nums = Array(4)
-//         .fill(null)
-//         .map(() => getRandomNumber())
-//       levelsArray.push({
-//         level: i,
-//         numbers: nums,
-//         correctAns: nums.reduce((sum, num) => sum + num, 0),
-//         userSolution: "",
-//         isCorrect: false,
-//       })
-//     }
-//     return levelsArray
-//   }
-
-//   function handleInputChange(levelIndex, value) {
-//     setLevels((prevLevels) =>
-//       prevLevels.map((level, index) =>
-//         index === levelIndex ? { ...level, userSolution: value } : level
-//       )
-//     )
-//   }
-
-//   function checkSolution() {
-//     // if (!levels[levelIndex].userSolution) {
-//     //   setModalMessage("Please enter a number")
-//     //   return
-//     // }
-//     // setLevels((prevLevels) =>
-//     //   prevLevels.map((level, index) => {
-//     //     if (index === levelIndex) {
-//     //       const isCorrect =
-//     //         parseInt(level.userSolution, 10) === level.correctAns
-//     //       setModalMessage(
-//     //         isCorrect
-//     //           ? `Good Job, that was correct!`
-//     //           : `Try again, that was close!  ${
-//     //               parseInt(level.userSolution, 10) > level.correctAns
-//     //                 ? "🔺"
-//     //                 : "🔻"
-//     //             }`
-//     //       )
-//     //       return { ...level, isCorrect }
-//     //     }
-//     //     return level
-//     //   })
-//     // )
-//     setLevels((prevLevels) => {
-//       const newLevels = prevLevels.map((level) => {
-//         const isCorrect = parseInt(level.userSolution, 10) === level.correctAns
-//         return { ...level, isCorrect }
-//       })
-//       return newLevels
-//     })
-//   }
-
-//   // Save progress to localStorage whenever levels change
-//   useEffect(() => {
-//     localStorage.setItem("abacusQuizProgress", JSON.stringify(levels))
-//   }, [levels])
-
-//   return (
-//     <>
-//       <h1 className="main-heading">Level {id} Mental Practice</h1>
-//       <div className="box-container">
-//         {levels.map((level, index) => (
-//           <div className="box" key={level.level}>
-//             <div className="boxsm">
-//               <p>#{level.level}</p>
-//             </div>
-//             <div>
-//               {level.numbers.map((num, idx) => (
-//                 <p key={idx}>{num}</p>
-//               ))}
-//             </div>
-//             <div
-//               className="boxsm answer-section"
-//               style={{
-//                 backgroundColor: level.isCorrect ? "lightgreen" : "",
-//                 display: "flex",
-//                 justifyContent: "center",
-//                 alignItems: "center",
-//                 flexDirection: "column",
-//                 gap: "10px",
-//               }}
-//             >
-//               <div
-//                 style={{
-//                   display: "flex",
-//                   justifyContent: "center",
-//                   alignItems: "center",
-//                   flexDirection: "column",
-//                 }}
-//               >
-//                 <input
-//                   style={{
-//                     width: "80px",
-//                     fontWeight: "bold",
-//                     fontSize: "1.1rem",
-//                     backgroundColor: "transparent",
-//                     borderRadius: "10px",
-//                     padding: "5px",
-//                   }}
-//                   value={level.userSolution}
-//                   onChange={(e) => handleInputChange(index, e.target.value)}
-//                   type="number"
-//                   placeholder="Answer"
-//                   disabled={level.isCorrect} // Disable input if correct
-//                 />
-//               </div>
-//               {/* <button
-//                 onClick={() => checkSolution(index)}
-//                 disabled={level.isCorrect} // Disable button if correct
-//               >
-//                 Enter
-//               </button> */}
-//             </div>
-//           </div>
-//         ))}
-//          <button onClick={checkSolution}>
-//           Submit
-//         </button>
-//         {JSON.stringify(levels)}
-//       </div>
-
-//       {/* Render the modal */}
-//       {modalMessage && (
-//         <Modal
-//           message={modalMessage}
-//           onClose={() => setModalMessage("")} // Close the modal
-//         />
-//       )}
-//     </>
-//   )
-// }
