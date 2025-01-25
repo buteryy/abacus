@@ -6,64 +6,12 @@ export default function AbacusQuiz() {
   const { id } = useParams()
   const timerRef = useRef(null) // Ref to store the timer ID
   const [levels, setLevels] = useState(() => {
-    // const savedLevels = localStorage.getItem("abacusQuizProgress")
-    // return savedLevels ? JSON.parse(savedLevels) : generateLevels(15)
     return generateLevels(15)
   })
   const [modalMessage, setModalMessage] = useState("") // Message for the modal
   const [time, setTime] = useState(10)
   const [isTimerRunning, setIsTimerRunning] = useState(false)
   const [timesup, setTimesup] = useState(false)
-
-  // function handleTimer() {
-  //   clearInterval(timer)
-  //   setIsTimerRunning((prev) => !prev)
-  //   // Reset and clear the timer if it's already running
-  //   if (isTimerRunning) {
-  //     setTime(600)
-  //     return
-  //   }
-
-  //   const timer = setInterval(() => {
-  //     setTime((prevTime) => {
-  //       if (prevTime === 0) {
-  //         clearInterval(timer)
-  //         setIsTimerRunning(false)
-  //         setModalMessage("Time's up! Please submit your answers.")
-  //         return 0
-  //       }
-  //       return prevTime - 1
-  //     })
-  //   }
-  //   , 1000)
-  // }
-
-  // function handleTimer() {
-  //   if (isTimerRunning) {
-  //     // Stop the timer
-  //     setTimesup(false)
-  //     clearInterval(timerRef.current);
-  //     timerRef.current = null; // Clear the ref
-  //     setIsTimerRunning(false);
-  //     setTime(10); // Reset the time to 10 minutes (optional)
-  //   } else {
-  //     // Start the timer
-  //     setIsTimerRunning(true);
-  //     timerRef.current = setInterval(() => {
-  //       setTime((prevTime) => {
-  //         if (prevTime === 0) {
-  //           clearInterval(timerRef.current); // Clear the timer
-  //           timerRef.current = null;
-  //           setIsTimerRunning(false);
-  //           setTimesup(true);
-  //           setModalMessage("Time's up! Please revise your answers.");
-  //           return 0; // Stop at 0
-  //         }
-  //         return prevTime - 1;
-  //       });
-  //     }, 1000);
-  //   }
-  // }
 
   function handleTimer() {
     if (isTimerRunning) {
@@ -177,11 +125,6 @@ export default function AbacusQuiz() {
       })
     )
   }
-
-  // Save progress to localStorage whenever levels change
-  // useEffect(() => {
-  //   localStorage.setItem("abacusQuizProgress", JSON.stringify(levels))
-  // }, [levels])
 
   useEffect(() => {
     if (timesup) {
@@ -319,7 +262,6 @@ export default function AbacusQuiz() {
       </div>
 
       {/* Render the modal */}
-      {/* model should not show up when clicking on the start timer button after the time is up */}
       {modalMessage && (
         <Modal
           message={modalMessage}
