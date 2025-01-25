@@ -11,8 +11,9 @@ export default function AbacusQuiz() {
     return generateLevels(15)
   })
   const [modalMessage, setModalMessage] = useState("") // Message for the modal
-  const [time, setTime] = useState(600)
+  const [time, setTime] = useState(10)
   const [isTimerRunning, setIsTimerRunning] = useState(false)
+  const [timesup, setTimesup] = useState(false)
 
   // function handleTimer() {
   //   clearInterval(timer)
@@ -40,10 +41,11 @@ export default function AbacusQuiz() {
   function handleTimer() {
     if (isTimerRunning) {
       // Stop the timer
+      setTimesup(false)
       clearInterval(timerRef.current);
       timerRef.current = null; // Clear the ref
       setIsTimerRunning(false);
-      setTime(600); // Reset the time to 10 minutes (optional)
+      setTime(10); // Reset the time to 10 minutes (optional)
     } else {
       // Start the timer
       setIsTimerRunning(true);
@@ -53,7 +55,8 @@ export default function AbacusQuiz() {
             clearInterval(timerRef.current); // Clear the timer
             timerRef.current = null;
             setIsTimerRunning(false);
-            setModalMessage("Time's up! Please submit your answers.");
+            setTimesup(true);
+            setModalMessage("Time's up! Please revise your answers.");
             return 0; // Stop at 0
           }
           return prevTime - 1;
@@ -138,14 +141,25 @@ export default function AbacusQuiz() {
   //   localStorage.setItem("abacusQuizProgress", JSON.stringify(levels))
   // }, [levels])
 
+
+  useEffect(() => {
+    if (timesup) {
+      // Clear the timer when time's up
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+      // submit the answers when time is up
+      checkSolution();
+    }
+  }, [timesup]);
+
   return (
     <>
       <h1 className="main-heading">Level {id} Mental Practice</h1>
       {/* Quiz Timer */}
       <div className="quiz-timer">
-      <h2>
-        Time Remaining: {Math.floor(time / 60)} minutes {String(time % 60).padStart(2, '0')} seconds
-      </h2>
+      {isTimerRunning && <h2>
+          Time Remaining: {Math.floor(time / 60)} minutes {String(time % 60).padStart(2, '0')} seconds
+      </h2>}
         <button
           onClick={handleTimer}
         style={{
@@ -210,7 +224,7 @@ export default function AbacusQuiz() {
                   onChange={(e) => handleInputChange(index, e.target.value)}
                   type="number"
                   placeholder="Answer"
-                  disabled={level.isCorrect} // Disable input if already evaluated
+                  disabled={level.isCorrect || !isTimerRunning} // Disable input if already evaluated
                 />
               </div>
             </div>
