@@ -56,18 +56,13 @@ export default function AbacussPractice() {
                 </div>
               </NavLink>
           </div>
-          <h1>Advanced Levels 1-10</h1>
+          <h1>Advanced Level</h1>
           <div className="container">
-              <div className="box">Adv Level 1</div>
-              <div className="box">Adv Level 2</div>
-              <div className="box">Adv Level 3</div>
-              <div className="box">Adv Level 4</div>
-              <div className="box">Adv Level 5</div>
-              <div className="box">Adv Level 6</div>
-              <div className="box">Adv Level 7</div>
-              <div className="box">Adv Level 8</div>
-              <div className="box center">Adv Level 9</div>
-              <div className="box center">Adv Level 10</div>
+              <NavLink to="11">
+                <div className="box">
+                  Advanced Level
+                </div>
+              </NavLink>
           </div>
         </>
   )

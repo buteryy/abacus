@@ -38,15 +38,48 @@ export default function AbacusQuiz() {
   //   , 1000)
   // }
 
+  // function handleTimer() {
+  //   if (isTimerRunning) {
+  //     // Stop the timer
+  //     setTimesup(false)
+  //     clearInterval(timerRef.current);
+  //     timerRef.current = null; // Clear the ref
+  //     setIsTimerRunning(false);
+  //     setTime(10); // Reset the time to 10 minutes (optional)
+  //   } else {
+  //     // Start the timer
+  //     setIsTimerRunning(true);
+  //     timerRef.current = setInterval(() => {
+  //       setTime((prevTime) => {
+  //         if (prevTime === 0) {
+  //           clearInterval(timerRef.current); // Clear the timer
+  //           timerRef.current = null;
+  //           setIsTimerRunning(false);
+  //           setTimesup(true);
+  //           setModalMessage("Time's up! Please revise your answers.");
+  //           return 0; // Stop at 0
+  //         }
+  //         return prevTime - 1;
+  //       });
+  //     }, 1000);
+  //   }
+  // }
+
   function handleTimer() {
     if (isTimerRunning) {
       // Stop the timer
-      setTimesup(false)
+      setTimesup(false);
       clearInterval(timerRef.current);
       timerRef.current = null; // Clear the ref
       setIsTimerRunning(false);
-      setTime(10); // Reset the time to 10 minutes (optional)
+      setTime(10); // Reset the time
     } else {
+      // Reset levels when starting the timer
+      setLevels(generateLevels(15));
+  
+      // Clear the modal message when starting the timer again
+      setModalMessage("");
+  
       // Start the timer
       setIsTimerRunning(true);
       timerRef.current = setInterval(() => {
@@ -64,6 +97,7 @@ export default function AbacusQuiz() {
       }, 1000);
     }
   }
+  
 
   function getRandomNumber() {
     // getting random numbers based on the level / id
@@ -71,6 +105,7 @@ export default function AbacusQuiz() {
     if (id == "8") return Math.floor(Math.random() * 10) + 1
     if (id == "9") return Math.floor(Math.random() * 10) + 1
     if (id == "10") return Math.floor(Math.random() * 10) + 1
+    if (id == "11") return Math.random() * 100 + 1
 
     return Math.floor(Math.random() * 100) + 1
   }
@@ -89,11 +124,18 @@ export default function AbacusQuiz() {
     if (id == "8") numOfProblems = 5;
     if (id == "9") numOfProblems = 4;
     if (id == "10") numOfProblems = 3;
+    if (id == "11") numOfProblems = 10;
   
     for (let i = 1; i <= totalLevels; i++) {
       const nums = Array(numOfProblems)
         .fill(null)
-        .map(() => (Math.random() > 0.70 ? -getRandomNumber() : getRandomNumber()));
+        .map(() => {
+          // if id == 11 then generate random numbers between 1 abd 100 and sometimes with 1 to 9999 
+          if (id == "11") {
+            return Math.random() > 0.80 ? (getRandomNumber() * 99).toFixed(2) : getRandomNumber().toFixed(2)
+          }
+          return Math.random() > 0.70 ? -getRandomNumber() : getRandomNumber()
+        });
   
       let sum = nums.reduce((acc, num) => acc + num, 0);
   
@@ -184,7 +226,11 @@ export default function AbacusQuiz() {
             </div>
             <div>
               {level.numbers.map((num, idx) => (
-                <p key={idx}>{num}</p>
+                <p style={{
+                  fontSize: id == '11' ? "0.8rem" : "1.2rem",
+                  textAlign:  id == '11' ? "right" : "center",
+                  letterSpacing: id == '11' ? "1px" : "0px",
+                }} key={idx}>{num}</p>
               ))}
             </div>
             <div
@@ -264,6 +310,7 @@ export default function AbacusQuiz() {
       </div>
 
       {/* Render the modal */}
+      {/* model should not show up when clicking on the start timer button after the time is up */}
       {modalMessage && (
         <Modal
           message={modalMessage}
