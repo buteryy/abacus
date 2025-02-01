@@ -140,7 +140,7 @@ export default function AbacusQuiz() {
 
   return (
     <>
-      <h1 className="main-heading">Level {id} Mental Practice</h1>
+      <h1 className="main-heading">{id == "11" ?  'Advanced Level (Addition)' : `Level ${id} Mental Practice`}</h1>
       {/* Quiz Timer */}
       <div className="quiz-timer">
         {isTimerRunning && (
@@ -167,7 +167,7 @@ export default function AbacusQuiz() {
       </div>
       <div className="box-container">
         {levels.map((level, index) => (
-          <div className="box" key={level.level}>
+          <div className="box card" key={level.level}>
             <div className="boxsm">
               <p>#{level.level}</p>
             </div>
