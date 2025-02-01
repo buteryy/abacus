@@ -4,10 +4,8 @@ import Modal from "../components/Modal"
 
 export default function AbacusQuiz() {
   const { id } = useParams()
-  const timerRef = useRef(null); // Ref to store the timer ID
+  const timerRef = useRef(null) // Ref to store the timer ID
   const [levels, setLevels] = useState(() => {
-    // const savedLevels = localStorage.getItem("abacusQuizProgress")
-    // return savedLevels ? JSON.parse(savedLevels) : generateLevels(15)
     return generateLevels(15)
   })
   const [modalMessage, setModalMessage] = useState("") // Message for the modal
@@ -15,89 +13,38 @@ export default function AbacusQuiz() {
   const [isTimerRunning, setIsTimerRunning] = useState(false)
   const [timesup, setTimesup] = useState(false)
 
-  // function handleTimer() {
-  //   clearInterval(timer)
-  //   setIsTimerRunning((prev) => !prev)
-  //   // Reset and clear the timer if it's already running
-  //   if (isTimerRunning) {
-  //     setTime(600)
-  //     return
-  //   }
-   
-  //   const timer = setInterval(() => {
-  //     setTime((prevTime) => {
-  //       if (prevTime === 0) {
-  //         clearInterval(timer)
-  //         setIsTimerRunning(false)
-  //         setModalMessage("Time's up! Please submit your answers.")
-  //         return 0
-  //       }
-  //       return prevTime - 1
-  //     })
-  //   }
-  //   , 1000)
-  // }
-
-  // function handleTimer() {
-  //   if (isTimerRunning) {
-  //     // Stop the timer
-  //     setTimesup(false)
-  //     clearInterval(timerRef.current);
-  //     timerRef.current = null; // Clear the ref
-  //     setIsTimerRunning(false);
-  //     setTime(10); // Reset the time to 10 minutes (optional)
-  //   } else {
-  //     // Start the timer
-  //     setIsTimerRunning(true);
-  //     timerRef.current = setInterval(() => {
-  //       setTime((prevTime) => {
-  //         if (prevTime === 0) {
-  //           clearInterval(timerRef.current); // Clear the timer
-  //           timerRef.current = null;
-  //           setIsTimerRunning(false);
-  //           setTimesup(true);
-  //           setModalMessage("Time's up! Please revise your answers.");
-  //           return 0; // Stop at 0
-  //         }
-  //         return prevTime - 1;
-  //       });
-  //     }, 1000);
-  //   }
-  // }
-
   function handleTimer() {
     if (isTimerRunning) {
       // Stop the timer
-      setTimesup(false);
-      clearInterval(timerRef.current);
-      timerRef.current = null; // Clear the ref
-      setIsTimerRunning(false);
-      setTime(10); // Reset the time
+      setTimesup(false)
+      clearInterval(timerRef.current)
+      timerRef.current = null // Clear the ref
+      setIsTimerRunning(false)
+      setTime(10) // Reset the time
     } else {
       // Reset levels when starting the timer
-      setLevels(generateLevels(15));
-  
+      setLevels(generateLevels(15))
+
       // Clear the modal message when starting the timer again
-      setModalMessage("");
-  
+      setModalMessage("")
+
       // Start the timer
-      setIsTimerRunning(true);
+      setIsTimerRunning(true)
       timerRef.current = setInterval(() => {
         setTime((prevTime) => {
           if (prevTime === 0) {
-            clearInterval(timerRef.current); // Clear the timer
-            timerRef.current = null;
-            setIsTimerRunning(false);
-            setTimesup(true);
-            setModalMessage("Time's up! Please revise your answers.");
-            return 0; // Stop at 0
+            clearInterval(timerRef.current) // Clear the timer
+            timerRef.current = null
+            setIsTimerRunning(false)
+            setTimesup(true)
+            setModalMessage("Time's up! Please revise your answers.")
+            return 0 // Stop at 0
           }
-          return prevTime - 1;
-        });
-      }, 1000);
+          return prevTime - 1
+        })
+      }, 1000)
     }
   }
-  
 
   function getRandomNumber() {
     // getting random numbers based on the level / id
@@ -111,38 +58,40 @@ export default function AbacusQuiz() {
   }
 
   function generateLevels(totalLevels) {
-    const levelsArray = [];
-    let numOfProblems;
-  
-    if (id == "1") numOfProblems = 7;
-    if (id == "2") numOfProblems = 6;
-    if (id == "3") numOfProblems = 5;
-    if (id == "4") numOfProblems = 4;
-    if (id == "5") numOfProblems = 3;
-    if (id == "6") numOfProblems = 2;
-    if (id == "7") numOfProblems = 6;
-    if (id == "8") numOfProblems = 5;
-    if (id == "9") numOfProblems = 4;
-    if (id == "10") numOfProblems = 3;
-    if (id == "11") numOfProblems = 10;
-  
+    const levelsArray = []
+    let numOfProblems
+
+    if (id == "1") numOfProblems = 7
+    if (id == "2") numOfProblems = 6
+    if (id == "3") numOfProblems = 5
+    if (id == "4") numOfProblems = 4
+    if (id == "5") numOfProblems = 3
+    if (id == "6") numOfProblems = 2
+    if (id == "7") numOfProblems = 6
+    if (id == "8") numOfProblems = 5
+    if (id == "9") numOfProblems = 4
+    if (id == "10") numOfProblems = 3
+    if (id == "11") numOfProblems = 10
+
     for (let i = 1; i <= totalLevels; i++) {
       const nums = Array(numOfProblems)
         .fill(null)
         .map(() => {
-          // if id == 11 then generate random numbers between 1 abd 100 and sometimes with 1 to 9999 
+          // if id == 11 then generate random numbers between 1 abd 100 and sometimes with 1 to 9999
           if (id == "11") {
-            return Math.random() > 0.80 ? (getRandomNumber() * 99).toFixed(2) : getRandomNumber().toFixed(2)
+            return Math.random() > 0.8
+              ? (getRandomNumber() * 99).toFixed(2)
+              : getRandomNumber().toFixed(2)
           }
-          return Math.random() > 0.70 ? -getRandomNumber() : getRandomNumber()
-        });
-  
-      let sum = nums.reduce((acc, num) => acc + num, 0);
-  
+          return Math.random() > 0.7 ? -getRandomNumber() : getRandomNumber()
+        })
+
+      let sum = nums.reduce((acc, num) => acc + num, 0)
+
       // Adjust the last number if the sum is negative
       if (sum < 0) {
-        nums[nums.length - 1] += Math.abs(sum);
-        sum = nums.reduce((acc, num) => acc + num, 0); // Recalculate to ensure it's positive
+        nums[nums.length - 1] += Math.abs(sum)
+        sum = nums.reduce((acc, num) => acc + num, 0) // Recalculate to ensure it's positive
       }
 
       levelsArray.push({
@@ -151,12 +100,11 @@ export default function AbacusQuiz() {
         correctAns: sum, // The final sum should always be positive
         userSolution: "",
         isCorrect: null, // Use `null` to indicate unattempted levels
-      });
+      })
     }
-  
-    return levelsArray;
+
+    return levelsArray
   }
-  
 
   function handleInputChange(levelIndex, value) {
     setLevels((prevLevels) =>
@@ -178,43 +126,42 @@ export default function AbacusQuiz() {
     )
   }
 
-  // Save progress to localStorage whenever levels change
-  // useEffect(() => {
-  //   localStorage.setItem("abacusQuizProgress", JSON.stringify(levels))
-  // }, [levels])
-
-
   useEffect(() => {
     if (timesup) {
       // Clear the timer when time's up
-      clearInterval(timerRef.current);
-      timerRef.current = null;
+      clearInterval(timerRef.current)
+      timerRef.current = null
+      // reset the timer
+      setTime(10)
       // submit the answers when time is up
-      checkSolution();
+      checkSolution()
     }
-  }, [timesup]);
+  }, [timesup])
 
   return (
     <>
       <h1 className="main-heading">Level {id} Mental Practice</h1>
       {/* Quiz Timer */}
       <div className="quiz-timer">
-      {isTimerRunning && <h2>
-          Time Remaining: {Math.floor(time / 60)} minutes {String(time % 60).padStart(2, '0')} seconds
-      </h2>}
+        {isTimerRunning && (
+          <h2>
+            Time Remaining: {Math.floor(time / 60)} minutes{" "}
+            {String(time % 60).padStart(2, "0")} seconds
+          </h2>
+        )}
         <button
           onClick={handleTimer}
-        style={{
-          padding: "10px 20px",
-          backgroundColor: "#4CAF50",
-          color: "white",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-          marginLeft: "10px",
-          marginTop: "20px",
-          cursor: "pointer"
-        }}>
+          style={{
+            padding: "10px 20px",
+            backgroundColor: "#4CAF50",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+            marginLeft: "10px",
+            marginTop: "20px",
+          }}
+        >
           {isTimerRunning ? "Stop & Reset Timer" : "Start Timer"}
         </button>
       </div>
@@ -226,11 +173,16 @@ export default function AbacusQuiz() {
             </div>
             <div>
               {level.numbers.map((num, idx) => (
-                <p style={{
-                  fontSize: id == '11' ? "0.8rem" : "1.2rem",
-                  textAlign:  id == '11' ? "right" : "center",
-                  letterSpacing: id == '11' ? "1px" : "0px",
-                }} key={idx}>{num}</p>
+                <p
+                  style={{
+                    fontSize: id == "11" ? "0.8rem" : "1.2rem",
+                    textAlign: id == "11" ? "right" : "center",
+                    letterSpacing: id == "11" ? "1px" : "0px",
+                  }}
+                  key={idx}
+                >
+                  {num}
+                </p>
               ))}
             </div>
             <div
@@ -310,7 +262,6 @@ export default function AbacusQuiz() {
       </div>
 
       {/* Render the modal */}
-      {/* model should not show up when clicking on the start timer button after the time is up */}
       {modalMessage && (
         <Modal
           message={modalMessage}
@@ -320,6 +271,3 @@ export default function AbacusQuiz() {
     </>
   )
 }
-
-
-
