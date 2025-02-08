@@ -6,29 +6,29 @@ import "./Multiplication.css"
 export default function Multiplication() {
   const timerRef = useRef(null); // Ref to store the timer ID
   const [levels, setLevels] = useState(() => {
-    return generateLevels(15)
+    return generateLevels(40)
   })
   const [modalMessage, setModalMessage] = useState("") // Message for the modal
-  const [time, setTime] = useState(10)
+  const [time, setTime] = useState(5 * 60) // 5 minutes
   const [isTimerRunning, setIsTimerRunning] = useState(false)
   const [timesup, setTimesup] = useState(false)
 
   function handleTimer() {
     if (isTimerRunning) {
       // Stop the timer
-      setTimesup(false);
       clearInterval(timerRef.current);
-      timerRef.current = null; // Clear the ref
+      timerRef.current = null;
       setIsTimerRunning(false);
-      setTime(10); // Reset the time
+      setTimesup(false);
+      setTime(5 * 60); // Reset the time
     } else {
-      // Reset levels when starting the timer
-      setLevels(generateLevels(15));
+      // Reset states when starting the timer
+      setTimesup(false);
+      setLevels(generateLevels(40)); // Reset levels
+      setModalMessage(""); // Clear modal message
+      setTime(5 * 60); // Reset time
   
-      // Clear the modal message when starting the timer again
-      setModalMessage("");
-  
-      // Start the timer
+      // Start the timer after resetting the time
       setIsTimerRunning(true);
       timerRef.current = setInterval(() => {
         setTime((prevTime) => {
@@ -45,7 +45,6 @@ export default function Multiplication() {
       }, 1000);
     }
   }
-  
 
   function getRandomNumber() {
     return Math.floor(Math.random() * 100) + 1
@@ -67,7 +66,6 @@ export default function Multiplication() {
     return levels;
   }
   
-
   function handleInputChange(levelIndex, value) {
     setLevels((prevLevels) =>
       prevLevels.map((level, index) =>
@@ -88,15 +86,41 @@ export default function Multiplication() {
     )
   }
 
+  const levelsCompleted = levels.filter((level) => level.isCorrect).length
+
+  let levelAchieved = ""
+  if (levelsCompleted === 40) {
+    levelAchieved = "4"
+  } else if (levelsCompleted >= 35) {
+    levelAchieved = "3"
+  } else if (levelsCompleted >= 30) {
+    levelAchieved = "2"
+  } else if (levelsCompleted >= 25) { 
+    levelAchieved = "1" 
+  }
+
   useEffect(() => {
     if (timesup) {
       // Clear the timer when time's up
-      clearInterval(timerRef.current);
-      timerRef.current = null;
+      clearInterval(timerRef.current)
+      timerRef.current = null
+      // reset the timer
+      setTime(5 * 60)
       // submit the answers when time is up
-      checkSolution();
+      checkSolution()
     }
-  }, [timesup]);
+  }, [timesup])
+  // useEffect(() => {
+  //   if (timesup) {
+  //     // Clear the timer when time's up
+  //     clearInterval(timerRef.current);
+  //     timerRef.current = null;
+  //     // reset the timer
+
+  //     // submit the answers when time is up
+  //     checkSolution();
+  //   }
+  // }, [timesup]);
 
   return (
     <>
@@ -121,18 +145,20 @@ export default function Multiplication() {
         }}>
           {isTimerRunning ? "Stop & Reset Timer" : "Start Timer"}
         </button>
+        {/* Show level achived */}
+        <h1> Level Achieved: {levelAchieved}</h1>
       </div>
       <div className="multiplication-cards-container">
         {levels.map((level, index) => (
           <div key={level.level} className="multiplication-card">
             <div className="multiplication-card-sr-num">{index < 9 ? `0${index + 1}` : index + 1}</div>
             <div className="quiz-numbers-and-input" style={{
-              backgroundColor:
-              level.isCorrect === null
-                ? "white" // Default white for unattempted levels
-                : level.isCorrect
-                ? "lightgreen" // Green for correct answers
-                : "lightcoral", // Red for wrong or empty answers
+               backgroundColor:
+               level.userSolution === "" // Default white for unattempted levels
+                 ? "white"
+                 : level.isCorrect
+                 ? "lightgreen" // Green for correct answers
+                 : "lightcoral", // Red for wrong answers
             }}>
                <span key={index}>{ level.numbers[0]} x {level.numbers[1]} =</span>
                <input
@@ -162,7 +188,7 @@ export default function Multiplication() {
             Submit
           </button>
           <button
-            onClick={() => setLevels(generateLevels(15))}
+            onClick={() => setLevels(generateLevels(40))}
             style={{
               padding: "10px 20px",
               backgroundColor: "#f44336",
