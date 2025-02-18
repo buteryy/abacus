@@ -49,13 +49,21 @@ export default function Multiplication() {
   }
 
   function getRandomNumber() {
-    return Math.floor(Math.random() * 100) + 1
+    return Math.random()
   }
 
   function generateLevels(totalLevels) {
     const levels = []
+    let numbers = []
     for (let i = 0; i < totalLevels; i++) {
-      const numbers = [getRandomNumber(), getRandomNumber()]
+      const twoDigitRandomNum = Math.floor(getRandomNumber() *90 + 10)
+      const threeDigitRandomNum = Math.floor(getRandomNumber() * 900 + 100)
+      if (getRandomNumber() > 0.5) {
+        // Swap the numbers randomly
+        numbers = [threeDigitRandomNum, twoDigitRandomNum]
+      } else {
+        numbers = [twoDigitRandomNum, threeDigitRandomNum]
+      }
       const correctAns = numbers[0] * numbers[1]
       levels.push({
         level: i + 1,
