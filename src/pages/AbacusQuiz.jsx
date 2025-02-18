@@ -52,7 +52,7 @@ export default function AbacusQuiz() {
     if (id == "8") return Math.floor(Math.random() * 10) + 1
     if (id == "9") return Math.floor(Math.random() * 10) + 1
     if (id == "10") return Math.floor(Math.random() * 10) + 1
-    if (id == "11") return Math.random() * 100 + 1
+    if (id == "11") return Math.random()
 
     return Math.floor(Math.random() * 100) + 1
   }
@@ -77,11 +77,20 @@ export default function AbacusQuiz() {
       const nums = Array(numOfProblems)
         .fill(null)
         .map(() => {
-          // if id == 11 then generate random numbers between 1 abd 100 and sometimes with 1 to 9999
+          // if id == 11 then generate random numbers between 1 and 100 and sometimes with 1 to 9999
           if (id == "11") {
-            return Math.random() > 0.8
-              ? (getRandomNumber() * 99).toFixed(2)
-              : getRandomNumber().toFixed(2)
+            // return Math.random() > 0.8
+            //   ? (getRandomNumber() * 99).toFixed(2)
+            //   : getRandomNumber().toFixed(2)
+
+
+            if (Math.random() > 0.60) {
+              return (getRandomNumber() * 9000 + 1000).toFixed(2)
+            } else if (Math.random() > 0.4) {
+              return (getRandomNumber() * 900 + 100).toFixed(2)
+            } else {
+              return (getRandomNumber() * 90 + 10).toFixed(2)
+            }
           }
           return Math.random() > 0.7 ? -getRandomNumber() : getRandomNumber()
         })
@@ -140,7 +149,7 @@ export default function AbacusQuiz() {
 
   return (
     <>
-      <h1 className="main-heading">{id == "11" ?  'Advanced Level (Addition)' : `Level ${id} Mental Practice`}</h1>
+      <h1 className="main-heading">{id == "11" ? 'Advanced Level (Addition)' : `Level ${id} Mental Practice`}</h1>
       {/* Quiz Timer */}
       <div className="quiz-timer">
         {isTimerRunning && (
@@ -192,8 +201,8 @@ export default function AbacusQuiz() {
                   level.isCorrect === null
                     ? "white" // Default white for unattempted levels
                     : level.isCorrect
-                    ? "lightgreen" // Green for correct answers
-                    : "lightcoral", // Red for wrong or empty answers
+                      ? "lightgreen" // Green for correct answers
+                      : "lightcoral", // Red for wrong or empty answers
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
