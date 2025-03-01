@@ -66,9 +66,15 @@ export default function AbacussPractice() {
                   Advanced 1 (Addition)
                 </div>
               </NavLink>
-              <NavLink to="/abacus-practive/multiplication advanced">
+              <NavLink to="/abacus-practice/multiplication">
                 <div className="box">
                   Advanced 2 (Multiplication)
+                </div>
+              </NavLink>
+
+              <NavLink to="/abacus-practice/division">
+                <div className="box">
+                  Advanced 3 (Division)
                 </div>
               </NavLink>
           </div>
