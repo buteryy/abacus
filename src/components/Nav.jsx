@@ -8,10 +8,10 @@ export default function Nav() {
           <NavLink to="/">Home</NavLink>
         </li>
         <li>
-          <NavLink to="/abacus-practice">Abacus Practice</NavLink>
+          <NavLink to="/abacus-practice">Mental Practice</NavLink>
         </li>
         <li>
-          <NavLink to="/mental-practice">Mental Practice</NavLink>
+          <NavLink to="/mental-practice">Abacus Practice</NavLink>
         </li>
       </ul>
     </nav>

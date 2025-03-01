@@ -1,9 +1,12 @@
 import { NavLink } from "react-router";
+import abacusLogo from "../assets/aba.png"
 
 export default function AbacussPractice() {
   return (
         <>
-          <h1>Levels 1-10</h1>
+          <div className=" abacus-logo-container">
+            <img src={abacusLogo} alt="abacus" className="abacus-logo"/>
+          </div>
           <div className="container abacus-practice-container">
               <NavLink to="1">
                 <div className="box">
@@ -56,16 +59,16 @@ export default function AbacussPractice() {
                 </div>
               </NavLink>
           </div>
-          <h1>Advanced Level</h1>
-          <div className="container abacus-practice-container">
+
+          <div className="container abacus-practice-container advanced">
               <NavLink to="11">
                 <div className="box">
-                  Advanced Level (Addition)
+                  Advanced 1 (Addition)
                 </div>
               </NavLink>
-              <NavLink to="/abacus-practive/multiplication">
+              <NavLink to="/abacus-practive/multiplication advanced">
                 <div className="box">
-                  Advanced Level (Multiplication)
+                  Advanced 2 (Multiplication)
                 </div>
               </NavLink>
           </div>
