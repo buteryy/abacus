@@ -72,6 +72,7 @@ body {
 .container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  place-items: center;
   gap: 10px;
   margin-bottom: 20px;
 }
@@ -128,6 +129,10 @@ body {
   flex-direction: column;
   justify-content: space-between;
 }
+
+.card {
+  min-height: 400px;
+}
 .boxsm {
   width: 100%;
   height: 40px;
@@ -166,4 +171,13 @@ body {
     color: black;
     cursor: not-allowed;
   }
+}
+
+.quiz-timer {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  /* gap: 20px; */
+  margin-bottom: 20px;
 }
