@@ -2,6 +2,7 @@ import "./App.css"
 import AbacussPractice from "./pages/AbacussPractice"
 import MentalPratice from "./pages/MentalPratice"
 import AbacusQuiz from "./pages/AbacusQuiz"
+import MentalQuiz from "./pages/MentalQuiz"
 import Layout from "./components/Layout"
 import { Routes, Route } from "react-router"
 import Multiplication from "./pages/Multiplication"
@@ -15,6 +16,7 @@ function App() {
         <Route index element={<Home />} />
         <Route path="abacus-practice" element={<AbacussPractice />} />
         <Route path="mental-practice" element={<MentalPratice />} />
+        <Route path="mental-practice/:id" element={<MentalQuiz />} />
         <Route path="abacus-practice/:id" element={<AbacusQuiz />} />
         <Route path="abacus-practice/multiplication" element={<Multiplication />} />
         <Route path="abacus-practice/division" element={<Division />} />

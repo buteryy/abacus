@@ -15,63 +15,124 @@ export default function AbacussPractice() {
               fontSize: "30px"
             }
           }>
-            <h1>Math Workout!</h1>
+            <h1>Abacus Math Workout!</h1>
           </div>
           <div className=" abacus-logo-container">
             <img src={abacusLogo} alt="abacus" className="abacus-logo"/>
           </div>
-          <div className="container abacus-practice-container">
-              <NavLink to="1">
-                <div className="box">
-                  Level 1
-                </div>
-              </NavLink>
-              <NavLink to="2">
-                <div className="box">
-                  Level 2
-                </div>
-              </NavLink>
-              <NavLink to="3">
-                <div className="box">
-                  Level 3
-                </div>
-              </NavLink>
-              <NavLink to="4">
-                <div className="box">
-                  Level 4
-                </div>
-              </NavLink>
-              <NavLink to="5">
-                <div className="box">
-                  Level 5
-                </div>
-              </NavLink>
-              <NavLink to="6">
-                <div className="box">
-                  Level 6
-                </div>
-              </NavLink>
-              <NavLink to="7">
-                <div className="box">
-                  Level 7
-                </div>
-              </NavLink>
-              <NavLink to="8">
-                <div className="box">
-                  Level 8
-                </div>
-              </NavLink>
-              <NavLink to="9">
-                <div className="box">
-                  Level 9
-                </div>
-              </NavLink>
-              <NavLink to="10">
-                <div className="box">
-                  Level 10
-                </div>
-              </NavLink>
+
+          <div>
+            <h1 style={{textAlign: 'center'}}>Addition</h1>
+            <div className="container abacus-practice-container">
+                <NavLink to="1">
+                  <div className="box">
+                    Level 1
+                  </div>
+                </NavLink>
+                <NavLink to="2">
+                  <div className="box">
+                    Level 2
+                  </div>
+                </NavLink>
+                <NavLink to="3">
+                  <div className="box">
+                    Level 3
+                  </div>
+                </NavLink>
+                <NavLink to="4">
+                  <div className="box">
+                    Level 4
+                  </div>
+                </NavLink>
+                <NavLink to="5">
+                  <div className="box">
+                    Level 5
+                  </div>
+                </NavLink>
+                <NavLink to="6">
+                  <div className="box">
+                    Level 6
+                  </div>
+                </NavLink>
+                <NavLink to="7">
+                  <div className="box">
+                    Level 7
+                  </div>
+                </NavLink>
+                <NavLink to="8">
+                  <div className="box">
+                    Level 8
+                  </div>
+                </NavLink>
+                <NavLink to="9">
+                  <div className="box">
+                    Level 9
+                  </div>
+                </NavLink>
+                <NavLink to="10">
+                  <div className="box">
+                    Level 10
+                  </div>
+                </NavLink>
+            </div>
           </div>
+          
+          <div>
+            <h1 style={{textAlign: 'center'}}>Multiplication</h1>
+            <div className="container abacus-practice-container">
+                <NavLink to="1/multiplication">
+                  <div style={{padding: "40px 20px"}} className="box">
+                    Level 1 
+                  </div>
+                </NavLink>
+                <NavLink to="2/multiplication">
+                  <div style={{padding: "40px 20px"}} className="box">
+                    Level 2 
+                  </div>
+                </NavLink>
+                <NavLink to="3/multiplication">
+                  <div style={{padding: "40px 20px"}} className="box">
+                    Level 3 
+                  </div>
+                </NavLink>
+                <NavLink to="4/multiplication">
+                  <div style={{padding: "40px 20px"}} className="box">
+                    Level 4 
+                  </div>
+                </NavLink>
+                <NavLink to="5/multiplication">
+                  <div style={{padding: "40px 20px"}} className="box">
+                    Level 5 
+                  </div>
+                </NavLink>
+                <NavLink to="6/multiplication">
+                  <div style={{padding: "40px 20px"}} className="box">
+                    Level 6 
+                  </div>
+                </NavLink>
+                <NavLink to="7/multiplication">
+                  <div style={{padding: "40px 20px"}} className="box">
+                    Level 7 
+                  </div>
+                </NavLink>
+                <NavLink to="8/multiplication">
+                  <div style={{padding: "40px 20px"}} className="box">
+                    Level 8 
+                  </div>
+                </NavLink>
+                <NavLink to="9/multiplication">
+                  <div style={{padding: "40px 20px"}} className="box">
+                    Level 9 
+                  </div>
+                </NavLink>
+                <NavLink to="10/multiplication">
+                  <div style={{padding: "40px 20px"}} className="box">
+                    Level 10 
+                  </div>
+                </NavLink>
+            </div>
+          </div>
+
 
           <div className="container abacus-practice-container advanced">
               <NavLink to="11">
