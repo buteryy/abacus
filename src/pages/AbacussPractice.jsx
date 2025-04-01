@@ -4,6 +4,19 @@ import abacusLogo from "../assets/aba.png"
 export default function AbacussPractice() {
   return (
         <>
+          <div className="quicksand-font" style={
+            {
+              background: "skyblue",
+              width: '80%',
+              margin: "10px auto",
+              textAlign: "center",
+              padding: "5px 0",
+              boxShadow: "2px 2px 10px black",
+              fontSize: "30px"
+            }
+          }>
+            <h1>Math Workout!</h1>
+          </div>
           <div className=" abacus-logo-container">
             <img src={abacusLogo} alt="abacus" className="abacus-logo"/>
           </div>

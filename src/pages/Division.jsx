@@ -134,7 +134,7 @@ export default function Division() {
 
   return (
     <>
-      <h1 className="main-heading">Advanced Level (Multiplication)</h1>
+      <h1 className="main-heading">Advanced Level (Division)</h1>
       {/* Quiz Timer */}
       <div className="quiz-timer">
         {isTimerRunning && (
@@ -179,7 +179,9 @@ export default function Division() {
               }}
             >
               <span key={index}>
-                {level.numbers[0].toLocaleString()} / {level.numbers[1]} =
+                {level.numbers[0].toLocaleString()} <span style={{
+                  fontSize: "20px"
+                }}>÷</span> {level.numbers[1]} =
               </span>
               <input
                 value={level.userSolution}
