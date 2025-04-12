@@ -8,6 +8,7 @@ import { Routes, Route } from "react-router"
 import Multiplication from "./pages/Multiplication"
 import Division from "./pages/Division"
 import Home from "./pages/Home"
+import SimpleMultiplication from "./pages/SimpleMultiplication"
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="mental-practice" element={<MentalPratice />} />
         <Route path="mental-practice/:id" element={<MentalQuiz />} />
         <Route path="abacus-practice/:id" element={<AbacusQuiz />} />
+        <Route path="abacus-practice/:id/multiplication" element={<SimpleMultiplication />} />
         <Route path="abacus-practice/multiplication" element={<Multiplication />} />
         <Route path="abacus-practice/division" element={<Division />} />
       </Route>
