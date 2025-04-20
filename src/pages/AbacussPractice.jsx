@@ -105,7 +105,7 @@ export default function AbacussPractice() {
                     Level 5 
                   </div>
                 </NavLink>
-                <NavLink to="6/multiplication">
+                {/* <NavLink to="6/multiplication">
                   <div style={{padding: "40px 20px"}} className="box">
                     Level 6 
                   </div>
@@ -129,7 +129,7 @@ export default function AbacussPractice() {
                   <div style={{padding: "40px 20px"}} className="box">
                     Level 10 
                   </div>
-                </NavLink>
+                </NavLink> */}
             </div>
           </div>
 

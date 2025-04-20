@@ -5,22 +5,6 @@ import "./Multiplication.css"
 
 export default function SimpleMultiplication() {
   const {id} = useParams()
-  console.log("PARAMS id ===> ", id)
-  let levelInfo = {
-    problems: 30,
-    digits: 2,
-  }
-  switch (id) {
-    case 1:
-      break;
-    case 2: 
-      levelInfo.digits = 2
-      break;
-    case 3: 
-      
-    default:
-      break;
-  }
   const timerRef = useRef(null) // Ref to store the timer ID
   const [levels, setLevels] = useState(() => {
     return generateLevels(30)
@@ -70,6 +54,8 @@ export default function SimpleMultiplication() {
 
   function generateLevels(totalLevels) {
     if (id == 5 ) totalLevels = 10
+    if (id == 4) totalLevels = 10
+    
     const levels = []
     let numbers = []
     for (let i = 0; i < totalLevels; i++) {
@@ -93,6 +79,18 @@ export default function SimpleMultiplication() {
         } 
       }
 
+      if (id == 4) {
+        if (i < 5 ) {
+          num1 = Math.floor(getRandomNumber() * 90 + 10)
+          num2 = Math.floor(getRandomNumber() * 10) 
+          if (num2 == 0) num2++
+        } else {
+          num1 = Math.floor(getRandomNumber() * 900 + 100)
+          num2 = Math.floor(getRandomNumber() * 10 )
+          if (num2 == 0) num2++
+        } 
+      }
+
       if (id == 5) {
         num1 = Math.floor(getRandomNumber() * 90 + 10)
         num2 = Math.floor(getRandomNumber() * 10 + 1)
@@ -104,6 +102,10 @@ export default function SimpleMultiplication() {
         numbers = [num1, num2]
       } else {
         numbers = [num2, num1]
+      }
+
+      if (id == 4) {
+        numbers = [num1, num2]
       }
       const correctAns = numbers[0] * numbers[1]
       levels.push({

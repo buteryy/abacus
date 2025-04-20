@@ -48,6 +48,15 @@ export default function AbacusQuiz() {
 
   function getRandomNumber() {
     // getting random numbers based on the level / id
+    if (id == "1") {
+      if (Math.random() > 0.6) return Math.floor(Math.random() * 10000) + 1
+      if (Math.random() > 0.5) return Math.floor(Math.random() * 1000) + 1
+      if (Math.random() > 0.4) return Math.floor(Math.random() * 100) + 1
+    }
+    if (id == "2") {
+      return Math.floor(Math.random() * 90) + 10
+    }
+    
     if (id == "7") return Math.floor(Math.random() * 10) + 1
     if (id == "8") return Math.floor(Math.random() * 10) + 1
     if (id == "9") return Math.floor(Math.random() * 10) + 1
@@ -62,7 +71,7 @@ export default function AbacusQuiz() {
     let numOfProblems
 
     if (id == "1") numOfProblems = 7
-    if (id == "2") numOfProblems = 6
+    if (id == "2") numOfProblems = 10
     if (id == "3") numOfProblems = 5
     if (id == "4") numOfProblems = 4
     if (id == "5") numOfProblems = 3
@@ -79,11 +88,6 @@ export default function AbacusQuiz() {
         .map(() => {
           // if id == 11 then generate random numbers between 1 and 100 and sometimes with 1 to 9999
           if (id == "11") {
-            // return Math.random() > 0.8
-            //   ? (getRandomNumber() * 99).toFixed(2)
-            //   : getRandomNumber().toFixed(2)
-
-
             if (Math.random() > 0.60) {
               return (getRandomNumber() * 9000 + 1000).toFixed(2)
             } else if (Math.random() > 0.4) {
@@ -176,7 +180,7 @@ export default function AbacusQuiz() {
       </div>
       <div className="box-container">
         {levels.map((level, index) => (
-          <div className="box card" key={level.level}>
+          <div className="box card" style={{ height: "fit-content"}} key={level.level}>
             <div className="boxsm">
               <p>#{level.level}</p>
             </div>
@@ -185,7 +189,7 @@ export default function AbacusQuiz() {
                 <p
                   style={{
                     fontSize: id == "11" ? "0.8rem" : "1.2rem",
-                    textAlign: id == "11" ? "right" : "center",
+                    textAlign: "right",
                     letterSpacing: id == "11" ? "1px" : "0px",
                   }}
                   key={idx}
