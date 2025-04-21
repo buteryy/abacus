@@ -11,7 +11,7 @@ export default function SimpleMultiplication() {
   })
 
   const [modalMessage, setModalMessage] = useState("") // Message for the modal
-  const [time, setTime] = useState()
+  const [time, setTime] = useState(0)
   const [isTimerRunning, setIsTimerRunning] = useState(false)
   const [timesup, setTimesup] = useState(false)
 
@@ -62,7 +62,7 @@ export default function SimpleMultiplication() {
       let num1
       let num2
       if (id == 1) {
-         num1 = Math.floor(getRandomNumber() *90 + 10)
+         num1 = Math.floor(getRandomNumber() * 90 + 10)
          num2 = Math.floor(getRandomNumber() * 900 + 100)
       }
       if (id == 2) {
@@ -164,18 +164,10 @@ export default function SimpleMultiplication() {
       // submit the answers when time is up
       checkSolution()
     }
+    return () => {
+      clearInterval(timerRef.current)
+    }
   }, [timesup])
-  // useEffect(() => {
-  //   if (timesup) {
-  //     // Clear the timer when time's up
-  //     clearInterval(timerRef.current);
-  //     timerRef.current = null;
-  //     // reset the timer
-
-  //     // submit the answers when time is up
-  //     checkSolution();
-  //   }
-  // }, [timesup]);
 
   return (
     <>
@@ -215,13 +207,6 @@ export default function SimpleMultiplication() {
             <div
               className="quiz-numbers-and-input"
               style={{
-                // backgroundColor:
-                //   level.userSolution === "" // Default white for unattempted levels
-                //     ? "white"
-                //     : level.isCorrect
-                //     ? "lightgreen" // Green for correct answers
-                //     : "lightcoral", // Red for wrong answers
-
                 backgroundColor:
                   level.isCorrect === null
                     ? "white" // Default white for unattempted levels

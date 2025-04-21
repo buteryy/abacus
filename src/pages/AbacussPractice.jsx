@@ -81,52 +81,52 @@ export default function AbacussPractice() {
             <h1 style={{textAlign: 'center'}}>Multiplication</h1>
             <div className="container abacus-practice-container">
                 <NavLink to="1/multiplication">
-                  <div style={{padding: "40px 20px"}} className="box">
+                  <div className="box">
                     Level 1 
                   </div>
                 </NavLink>
                 <NavLink to="2/multiplication">
-                  <div style={{padding: "40px 20px"}} className="box">
+                  <div className="box">
                     Level 2 
                   </div>
                 </NavLink>
                 <NavLink to="3/multiplication">
-                  <div style={{padding: "40px 20px"}} className="box">
+                  <div className="box">
                     Level 3 
                   </div>
                 </NavLink>
                 <NavLink to="4/multiplication">
-                  <div style={{padding: "40px 20px"}} className="box">
+                  <div className="box">
                     Level 4 
                   </div>
                 </NavLink>
                 <NavLink to="5/multiplication">
-                  <div style={{padding: "40px 20px"}} className="box">
+                  <div className="box">
                     Level 5 
                   </div>
                 </NavLink>
                 {/* <NavLink to="6/multiplication">
-                  <div style={{padding: "40px 20px"}} className="box">
+                  <div className="box">
                     Level 6 
                   </div>
                 </NavLink>
                 <NavLink to="7/multiplication">
-                  <div style={{padding: "40px 20px"}} className="box">
+                  <div className="box">
                     Level 7 
                   </div>
                 </NavLink>
                 <NavLink to="8/multiplication">
-                  <div style={{padding: "40px 20px"}} className="box">
+                  <div className="box">
                     Level 8 
                   </div>
                 </NavLink>
                 <NavLink to="9/multiplication">
-                  <div style={{padding: "40px 20px"}} className="box">
+                  <div className="box">
                     Level 9 
                   </div>
                 </NavLink>
                 <NavLink to="10/multiplication">
-                  <div style={{padding: "40px 20px"}} className="box">
+                  <div className="box">
                     Level 10 
                   </div>
                 </NavLink> */}
