@@ -1,0 +1,33 @@
+.division-cards-container {
+  display: flex;
+  flex-direction: column;
+  max-height: 100vh;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px;
+  overflow-x: scroll;
+}
+
+.division-card {
+  border: 2px solid black;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.division-card-sr-num {
+  border-right: 2px solid black;
+  padding: 20px;
+}
+
+.quiz-numbers-and-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.division-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}

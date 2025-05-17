@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react"
 import { useParams } from "react-router"
 import Modal from "../components/Modal"
+import { TIMER } from "../util"
 
 export default function MentalQuiz() {
   const { id } = useParams()
@@ -9,7 +10,7 @@ export default function MentalQuiz() {
     return generateLevels(15)
   })
   const [modalMessage, setModalMessage] = useState("") // Message for the modal
-  const [time, setTime] = useState(10)
+  const [time, setTime] = useState(TIMER)
   const [isTimerRunning, setIsTimerRunning] = useState(false)
   const [timesup, setTimesup] = useState(false)
 
@@ -20,7 +21,7 @@ export default function MentalQuiz() {
       clearInterval(timerRef.current)
       timerRef.current = null // Clear the ref
       setIsTimerRunning(false)
-      setTime(10) // Reset the time
+      setTime(TIMER) // Reset the time
     } else {
       // Reset levels when starting the timer
       setLevels(generateLevels(15))
@@ -141,7 +142,7 @@ export default function MentalQuiz() {
       clearInterval(timerRef.current)
       timerRef.current = null
       // reset the timer
-      setTime(10)
+      setTime(TIMER)
       // submit the answers when time is up
       checkSolution()
     }

@@ -133,6 +133,62 @@ export default function AbacussPractice() {
             </div>
           </div>
 
+          <div>
+            <h1 style={{textAlign: 'center'}}>Division</h1>
+            <div className="container abacus-practice-container">
+                <NavLink to="1/division">
+                  <div style={{padding: "40px 20px"}} className="box">
+                    Level 1 
+                  </div>
+                </NavLink>
+                <NavLink to="2/division">
+                  <div style={{padding: "40px 20px"}} className="box">
+                    Level 2 
+                  </div>
+                </NavLink>
+                <NavLink to="3/division">
+                  <div style={{padding: "40px 20px"}} className="box">
+                    Level 3 
+                  </div>
+                </NavLink>
+                <NavLink to="4/division">
+                  <div style={{padding: "40px 20px"}} className="box">
+                    Level 4 
+                  </div>
+                </NavLink>
+                <NavLink to="5/division">
+                  <div style={{padding: "40px 20px"}} className="box">
+                    Level 5 
+                  </div>
+                </NavLink>
+                {/* <NavLink to="6/multiplication">
+                  <div style={{padding: "40px 20px"}} className="box">
+                    Level 6 
+                  </div>
+                </NavLink>
+                <NavLink to="7/multiplication">
+                  <div style={{padding: "40px 20px"}} className="box">
+                    Level 7 
+                  </div>
+                </NavLink>
+                <NavLink to="8/multiplication">
+                  <div style={{padding: "40px 20px"}} className="box">
+                    Level 8 
+                  </div>
+                </NavLink>
+                <NavLink to="9/multiplication">
+                  <div style={{padding: "40px 20px"}} className="box">
+                    Level 9 
+                  </div>
+                </NavLink>
+                <NavLink to="10/multiplication">
+                  <div style={{padding: "40px 20px"}} className="box">
+                    Level 10 
+                  </div>
+                </NavLink> */}
+            </div>
+          </div>
+
 
           <div className="container abacus-practice-container advanced">
               <NavLink to="11">

@@ -1,15 +1,16 @@
 import { useState, useEffect, useRef } from "react"
-import { TIMER } from "../util"
+import { useParams } from "react-router"
 import Modal from "../components/Modal"
-import "./Multiplication.css"
+import "./Division.css"
+import { generateRandomNumber, TIMER } from "../util"
 
-export default function Multiplication() {
+export default function SimpleDivision() {
+  const {id} = useParams()
   const timerRef = useRef(null) // Ref to store the timer ID
   const [levels, setLevels] = useState(() => {
-    return generateLevels(40)
+    return generateLevels(30)
   })
 
-  console.log("levels", levels)
   const [modalMessage, setModalMessage] = useState("") // Message for the modal
   const [time, setTime] = useState(TIMER)
   const [isTimerRunning, setIsTimerRunning] = useState(false)
@@ -26,7 +27,7 @@ export default function Multiplication() {
     } else {
       // Reset states when starting the timer
       setTimesup(false)
-      setLevels(generateLevels(40)) // Reset levels
+      setLevels(generateLevels(30)) // Reset levels
       setModalMessage("") // Clear modal message
       setTime(TIMER) // Reset time
 
@@ -52,29 +53,75 @@ export default function Multiplication() {
     return Math.random()
   }
 
+
   function generateLevels(totalLevels) {
+    if (id == 5) totalLevels = 10
+    if (id == 4) totalLevels = 10
+  
     const levels = []
-    let numbers = []
     for (let i = 0; i < totalLevels; i++) {
-      const twoDigitRandomNum = Math.floor(getRandomNumber() *90 + 10)
-      const threeDigitRandomNum = Math.floor(getRandomNumber() * 900 + 100)
-      if (getRandomNumber() > 0.5) {
-        // Swap the numbers randomly
-        numbers = [threeDigitRandomNum, twoDigitRandomNum]
-      } else {
-        numbers = [twoDigitRandomNum, threeDigitRandomNum]
+      let num1, num2
+  
+      if (id == 1) {
+        // 5-digit number ÷ 2/3-digit number = whole number
+        num2 = generateRandomNumber(Math.random() > 0.5 ? 3 : 2)
+        const quotient = generateRandomNumber(5 - num2.toString().length) // to keep num1 within 5 digits
+        num1 = num2 * quotient
       }
-      const correctAns = numbers[0] * numbers[1]
+  
+      if (id == 2) {
+        // quotient and divisor between 2–10
+        const quotient = Math.floor(getRandomNumber() * 9 + 2)
+        num2 = Math.floor(getRandomNumber() * 9 + 2)
+        num1 = quotient * num2
+      }
+  
+      if (id == 3) {
+        if (i < 10) {
+          // quotient: 10–99, divisor: 2–10
+          const quotient = Math.floor(getRandomNumber() * 90 + 10)
+          num2 = Math.floor(getRandomNumber() * 9 + 2)
+          num1 = quotient * num2
+        } else {
+          // quotient and divisor between 2–10
+          const quotient = Math.floor(getRandomNumber() * 9 + 2)
+          num2 = Math.floor(getRandomNumber() * 9 + 2)
+          num1 = quotient * num2
+        }
+      }
+  
+      if (id == 4) {
+        if (i < 5) {
+          // quotient and divisor between 2–10
+          const quotient = Math.floor(getRandomNumber() * 9 + 2)
+          num2 = Math.floor(getRandomNumber() * 9 + 2)
+          num1 = quotient * num2
+        } else {
+          // quotient: 10–99, divisor: 2–10
+          const quotient = Math.floor(getRandomNumber() * 90 + 10)
+          num2 = Math.floor(getRandomNumber() * 9 + 2)
+          num1 = quotient * num2
+        }
+      }
+  
+      if (id == 5) {
+        // quotient: 10–99, divisor: 2–10
+        const quotient = Math.floor(getRandomNumber() * 90 + 10)
+        num2 = Math.floor(getRandomNumber() * 9 + 2)
+        num1 = quotient * num2
+      }
+  
       levels.push({
         level: i + 1,
-        numbers,
-        correctAns,
+        numbers: [num1, num2],
+        correctAns: num1 / num2,
         userSolution: "",
         isCorrect: null,
       })
     }
     return levels
   }
+  
 
   function handleInputChange(levelIndex, value) {
     setLevels((prevLevels) =>
@@ -122,21 +169,10 @@ export default function Multiplication() {
       checkSolution()
     }
   }, [timesup])
-  // useEffect(() => {
-  //   if (timesup) {
-  //     // Clear the timer when time's up
-  //     clearInterval(timerRef.current);
-  //     timerRef.current = null;
-  //     // reset the timer
-
-  //     // submit the answers when time is up
-  //     checkSolution();
-  //   }
-  // }, [timesup]);
 
   return (
     <>
-      <h1 className="main-heading">Advanced Level (Multiplication)</h1>
+      <h1 className="main-heading">Basic Division</h1>
       {/* Quiz Timer */}
       <div className="quiz-timer">
         {isTimerRunning && (
@@ -163,22 +199,15 @@ export default function Multiplication() {
         {/* Show level achived */}
         {levelAchieved && <h1> Level Achieved: {levelAchieved}</h1>}
       </div>
-      <div className="multiplication-cards-container">
+      <div className="division-cards-container">
         {levels.map((level, index) => (
-          <div key={level.level} className="multiplication-card">
-            <div className="multiplication-card-sr-num">
+          <div key={level.level} className="division-card">
+            <div className="division-card-sr-num">
               {index < 9 ? `0${index + 1}` : index + 1}
             </div>
             <div
               className="quiz-numbers-and-input"
               style={{
-                // backgroundColor:
-                //   level.userSolution === "" // Default white for unattempted levels
-                //     ? "white"
-                //     : level.isCorrect
-                //     ? "lightgreen" // Green for correct answers
-                //     : "lightcoral", // Red for wrong answers
-
                 backgroundColor:
                   level.isCorrect === null
                     ? "white" // Default white for unattempted levels
@@ -188,7 +217,7 @@ export default function Multiplication() {
               }}
             >
               <span key={index}>
-                {level.numbers[0]} x {level.numbers[1]} =
+                {level.numbers[0].toLocaleString()} ÷ {level.numbers[1]} =
               </span>
               <input
                 value={level.userSolution}
@@ -201,7 +230,7 @@ export default function Multiplication() {
           </div>
         ))}
       </div>
-      <div className="multiplication-buttons">
+      <div className="division-buttons">
         <button
           onClick={checkSolution}
           style={{
@@ -217,7 +246,7 @@ export default function Multiplication() {
           Submit
         </button>
         <button
-          onClick={() => setLevels(generateLevels(40))}
+          onClick={() => setLevels(generateLevels(30))}
           style={{
             padding: "10px 20px",
             backgroundColor: "#f44336",

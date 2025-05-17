@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react"
 import { useParams } from "react-router"
 import Modal from "../components/Modal"
 import "./Multiplication.css"
+import { TIMER } from "../util"
 
 export default function SimpleMultiplication() {
   const {id} = useParams()
@@ -11,7 +12,7 @@ export default function SimpleMultiplication() {
   })
 
   const [modalMessage, setModalMessage] = useState("") // Message for the modal
-  const [time, setTime] = useState()
+  const [time, setTime] = useState(TIMER)
   const [isTimerRunning, setIsTimerRunning] = useState(false)
   const [timesup, setTimesup] = useState(false)
 
@@ -22,13 +23,13 @@ export default function SimpleMultiplication() {
       timerRef.current = null
       setIsTimerRunning(false)
       setTimesup(false)
-      setTime(5 * 60) // Reset the time
+      setTime(TIMER) // Reset the time
     } else {
       // Reset states when starting the timer
       setTimesup(false)
       setLevels(generateLevels(30)) // Reset levels
       setModalMessage("") // Clear modal message
-      setTime(10) // Reset time
+      setTime(TIMER) // Reset time
 
       // Start the timer after resetting the time
       setIsTimerRunning(true)
@@ -160,7 +161,7 @@ export default function SimpleMultiplication() {
       clearInterval(timerRef.current)
       timerRef.current = null
       // reset the timer
-      setTime(5 * 60)
+      setTime(TIMER)
       // submit the answers when time is up
       checkSolution()
     }
