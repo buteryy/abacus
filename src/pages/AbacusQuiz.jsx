@@ -3,20 +3,6 @@ import { useParams } from "react-router"
 import Modal from "../components/Modal"
 import { TIMER } from "../util"
 
-const problemsMap = {
-  "1": 7,
-  "2": 10,
-  "3": 5,
-  "4": 4,
-  "5": 3,
-  "6": 2,
-  "7": 6,
-  "8": 5,
-  "9": 4,
-  "10": 3,
-  "11": 10,
-}
-
 export default function AbacusQuiz() {
   const { id } = useParams()
   const timerRef = useRef(null) // Ref to store the timer ID
@@ -68,27 +54,51 @@ export default function AbacusQuiz() {
       if (Math.random() > 0.5) return Math.floor(Math.random() * 1000) + 1
       if (Math.random() > 0.4) return Math.floor(Math.random() * 100) + 1
     }
-    if (id == "2") return Math.floor(Math.random() * 90) + 10
+    if (id == "2") {
+      return Math.floor(Math.random() * 90) + 10
+    }
+    
     if (id == "7") return Math.floor(Math.random() * 10) + 1
     if (id == "8") return Math.floor(Math.random() * 10) + 1
     if (id == "9") return Math.floor(Math.random() * 10) + 1
     if (id == "10") return Math.floor(Math.random() * 10) + 1
-    if (id == "11") {
-      if (Math.random() > 0.60) return (Math.random() * 9000 + 1000).toFixed(2)
-      if (Math.random() > 0.4) return (Math.random() * 900 + 100).toFixed(2)
-      return (Math.random() * 90 + 10).toFixed(2)
-    }
+    if (id == "11") return Math.random()
+
     return Math.floor(Math.random() * 100) + 1
   }
 
   function generateLevels(totalLevels) {
     const levelsArray = []
-    const numOfProblems = problemsMap[id] || 5 // default to 5 if unknown id
+    let numOfProblems
+
+    if (id == "1") numOfProblems = 7
+    if (id == "2") numOfProblems = 10
+    if (id == "3") numOfProblems = 5
+    if (id == "4") numOfProblems = 4
+    if (id == "5") numOfProblems = 3
+    if (id == "6") numOfProblems = 2
+    if (id == "7") numOfProblems = 6
+    if (id == "8") numOfProblems = 5
+    if (id == "9") numOfProblems = 4
+    if (id == "10") numOfProblems = 3
+    if (id == "11") numOfProblems = 10
 
     for (let i = 1; i <= totalLevels; i++) {
       const nums = Array(numOfProblems)
         .fill(null)
-        .map(() =>  Math.random() > 0.7 ? -getRandomNumber() : getRandomNumber())
+        .map(() => {
+          // if id == 11 then generate random numbers between 1 and 100 and sometimes with 1 to 9999
+          if (id == "11") {
+            if (Math.random() > 0.60) {
+              return (getRandomNumber() * 9000 + 1000).toFixed(2)
+            } else if (Math.random() > 0.4) {
+              return (getRandomNumber() * 900 + 100).toFixed(2)
+            } else {
+              return (getRandomNumber() * 90 + 10).toFixed(2)
+            }
+          }
+          return Math.random() > 0.7 ? -getRandomNumber() : getRandomNumber()
+        })
 
       let sum = nums.reduce((acc, num) => acc + num, 0)
 
@@ -140,7 +150,6 @@ export default function AbacusQuiz() {
       // submit the answers when time is up
       checkSolution()
     }
-    return () => clearInterval(timerRef.current)
   }, [timesup])
 
   return (
