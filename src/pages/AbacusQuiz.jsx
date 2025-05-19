@@ -74,9 +74,9 @@ export default function AbacusQuiz() {
     if (id == "1") numOfProblems = 7
     if (id == "2") numOfProblems = 10
     if (id == "3") numOfProblems = 5
-    if (id == "4") numOfProblems = 4
-    if (id == "5") numOfProblems = 3
-    if (id == "6") numOfProblems = 2
+    if (id == "4") numOfProblems = 6
+    if (id == "5") numOfProblems = 5
+    if (id == "6") numOfProblems = 4
     if (id == "7") numOfProblems = 6
     if (id == "8") numOfProblems = 5
     if (id == "9") numOfProblems = 4
