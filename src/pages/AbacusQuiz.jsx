@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from "react"
-import { useParams } from "react-router"
-import Modal from "../components/Modal"
-import { TIMER } from "../util"
+import { useState, useEffect, useRef } from 'react'
+import { useParams } from 'react-router'
+import Modal from '../components/Modal'
+import { generateRandomNumber, getNumOfProblems, TIMER } from '../util'
 
 export default function AbacusQuiz() {
   const { id } = useParams()
@@ -9,7 +9,7 @@ export default function AbacusQuiz() {
   const [levels, setLevels] = useState(() => {
     return generateLevels(15)
   })
-  const [modalMessage, setModalMessage] = useState("") // Message for the modal
+  const [modalMessage, setModalMessage] = useState('') // Message for the modal
   const [time, setTime] = useState(TIMER)
   const [isTimerRunning, setIsTimerRunning] = useState(false)
   const [timesup, setTimesup] = useState(false)
@@ -27,7 +27,7 @@ export default function AbacusQuiz() {
       setLevels(generateLevels(15))
 
       // Clear the modal message when starting the timer again
-      setModalMessage("")
+      setModalMessage('')
 
       // Start the timer
       setIsTimerRunning(true)
@@ -49,70 +49,53 @@ export default function AbacusQuiz() {
 
   function getRandomNumber() {
     // getting random numbers based on the level / id
-    if (id == "1") {
-      if (Math.random() > 0.6) return Math.floor(Math.random() * 10000) + 1
-      if (Math.random() > 0.5) return Math.floor(Math.random() * 1000) + 1
-      if (Math.random() > 0.4) return Math.floor(Math.random() * 100) + 1
+    if (id == '1') {
+      if (Math.random() > 0.6) return generateRandomNumber(4)
+      else if (Math.random() > 0.5) return generateRandomNumber(3)
+      else return generateRandomNumber(2)
     }
-    if (id == "2") {
-      return Math.floor(Math.random() * 90) + 10
+    if (id == '2') return generateRandomNumber(3)
+    if (id == '3') return generateRandomNumber(3)
+    if (id == '4') return generateRandomNumber(2)
+    if (id == '5') return generateRandomNumber(2)
+    if (id == '6') return generateRandomNumber(2)
+    if (id == '7') return generateRandomNumber(1)
+    if (id == '8') return generateRandomNumber(1)
+    if (id == '9') return generateRandomNumber(1)
+    if (id == '10') return generateRandomNumber(1)
+    if (id == '11') {
+      if (Math.random() > 0.6)
+        return (generateRandomNumber(4) + Math.random()).toFixed(2)
+      else if (Math.random() > 0.4)
+        return (generateRandomNumber(3) + Math.random()).toFixed(2)
+      else return (generateRandomNumber(2) + Math.random()).toFixed(2)
     }
-    
-    if (id == "7") return Math.floor(Math.random() * 10) + 1
-    if (id == "8") return Math.floor(Math.random() * 10) + 1
-    if (id == "9") return Math.floor(Math.random() * 10) + 1
-    if (id == "10") return Math.floor(Math.random() * 10) + 1
-    if (id == "11") return Math.random()
 
-    return Math.floor(Math.random() * 100) + 1
+    return generateRandomNumber(2)
   }
 
   function generateLevels(totalLevels) {
     const levelsArray = []
-    let numOfProblems
-
-    if (id == "1") numOfProblems = 7
-    if (id == "2") numOfProblems = 10
-    if (id == "3") numOfProblems = 5
-    if (id == "4") numOfProblems = 6
-    if (id == "5") numOfProblems = 5
-    if (id == "6") numOfProblems = 4
-    if (id == "7") numOfProblems = 6
-    if (id == "8") numOfProblems = 5
-    if (id == "9") numOfProblems = 4
-    if (id == "10") numOfProblems = 3
-    if (id == "11") numOfProblems = 10
+    let numOfProblems = getNumOfProblems(id)
 
     for (let i = 1; i <= totalLevels; i++) {
       const nums = Array(numOfProblems)
         .fill(null)
         .map(() => {
-          // if id == 11 then generate random numbers between 1 and 100 and sometimes with 1 to 9999
-          if (id == "11") {
-            if (Math.random() > 0.60) {
-              return (getRandomNumber() * 9000 + 1000).toFixed(2)
-            } else if (Math.random() > 0.4) {
-              return (getRandomNumber() * 900 + 100).toFixed(2)
-            } else {
-              return (getRandomNumber() * 90 + 10).toFixed(2)
-            }
-          }
-          return Math.random() > 0.7 ? -getRandomNumber() : getRandomNumber()
+          return Math.random() > 0.9
+            ? getRandomNumber() * -1
+            : getRandomNumber()
         })
 
       let sum = nums.reduce((acc, num) => acc + num, 0)
 
-      // Adjust the last number if the sum is negative
-      if (sum < 0) {
-        nums[nums.length - 1] += Math.abs(sum)
-        sum = nums.reduce((acc, num) => acc + num, 0) // Recalculate to ensure it's positive
-      }
+      if (sum < 0) console.log(sum)
 
       levelsArray.push({
         level: i,
         numbers: nums,
-        correctAns: sum, // The final sum should always be positive
-        userSolution: "",
+        correctAns: sum,
+        userSolution: '',
         isCorrect: null, // Use `null` to indicate unattempted levels
       })
     }
@@ -132,7 +115,7 @@ export default function AbacusQuiz() {
     setLevels((prevLevels) =>
       prevLevels.map((level) => {
         const isCorrect =
-          level.userSolution === "" // Empty answers
+          level.userSolution === '' // Empty answers
             ? false
             : parseInt(level.userSolution, 10) === level.correctAns
         return { ...level, isCorrect }
@@ -154,34 +137,42 @@ export default function AbacusQuiz() {
 
   return (
     <>
-      <h1 className="main-heading">{id == "11" ? 'Advanced Level (Addition)' : `Level ${id} Mental Practice`}</h1>
+      <h1 className="main-heading">
+        {id == '11'
+          ? 'Advanced Level (Addition)'
+          : `Level ${id} Mental Practice`}
+      </h1>
       {/* Quiz Timer */}
       <div className="quiz-timer">
         {isTimerRunning && (
           <h2>
-            Time Remaining: {Math.floor(time / 60)} minutes{" "}
-            {String(time % 60).padStart(2, "0")} seconds
+            Time Remaining: {Math.floor(time / 60)} minutes{' '}
+            {String(time % 60).padStart(2, '0')} seconds
           </h2>
         )}
         <button
           onClick={handleTimer}
           style={{
-            padding: "10px 20px",
-            backgroundColor: "#4CAF50",
-            color: "white",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
-            marginLeft: "10px",
-            marginTop: "20px",
+            padding: '10px 20px',
+            backgroundColor: '#4CAF50',
+            color: 'white',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+            marginLeft: '10px',
+            marginTop: '20px',
           }}
         >
-          {isTimerRunning ? "Stop & Reset Timer" : "Start Timer"}
+          {isTimerRunning ? 'Stop & Reset Timer' : 'Start Timer'}
         </button>
       </div>
       <div className="box-container">
         {levels.map((level, index) => (
-          <div className="box card" style={{ height: "fit-content"}} key={level.level}>
+          <div
+            className="box card"
+            style={{ height: 'fit-content' }}
+            key={level.level}
+          >
             <div className="boxsm">
               <p>#{level.level}</p>
             </div>
@@ -189,9 +180,9 @@ export default function AbacusQuiz() {
               {level.numbers.map((num, idx) => (
                 <p
                   style={{
-                    fontSize: id == "11" ? "0.8rem" : "1.2rem",
-                    textAlign: "right",
-                    letterSpacing: id == "11" ? "1px" : "0px",
+                    fontSize: id == '11' ? '0.8rem' : '1.2rem',
+                    textAlign: 'right',
+                    letterSpacing: id == '11' ? '1px' : '0px',
                   }}
                   key={idx}
                 >
@@ -204,33 +195,33 @@ export default function AbacusQuiz() {
               style={{
                 backgroundColor:
                   level.isCorrect === null
-                    ? "white" // Default white for unattempted levels
+                    ? 'white' // Default white for unattempted levels
                     : level.isCorrect
-                      ? "lightgreen" // Green for correct answers
-                      : "lightcoral", // Red for wrong or empty answers
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "column",
-                gap: "10px",
+                    ? 'lightgreen' // Green for correct answers
+                    : 'lightcoral', // Red for wrong or empty answers
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'column',
+                gap: '10px',
               }}
             >
               <div
                 style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  flexDirection: "column",
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flexDirection: 'column',
                 }}
               >
                 <input
                   style={{
-                    width: "80px",
-                    fontWeight: "bold",
-                    fontSize: "1.1rem",
-                    backgroundColor: "transparent",
-                    borderRadius: "10px",
-                    padding: "5px",
+                    width: '80px',
+                    fontWeight: 'bold',
+                    fontSize: '1.1rem',
+                    backgroundColor: 'transparent',
+                    borderRadius: '10px',
+                    padding: '5px',
                   }}
                   value={level.userSolution}
                   onChange={(e) => handleInputChange(index, e.target.value)}
@@ -246,13 +237,13 @@ export default function AbacusQuiz() {
           <button
             onClick={checkSolution}
             style={{
-              padding: "10px 20px",
-              backgroundColor: "#4CAF50",
-              color: "white",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-              marginTop: "20px",
+              padding: '10px 20px',
+              backgroundColor: '#4CAF50',
+              color: 'white',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer',
+              marginTop: '20px',
             }}
           >
             Submit
@@ -260,14 +251,14 @@ export default function AbacusQuiz() {
           <button
             onClick={() => setLevels(generateLevels(15))}
             style={{
-              padding: "10px 20px",
-              backgroundColor: "#f44336",
-              color: "white",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-              marginLeft: "10px",
-              marginTop: "20px",
+              padding: '10px 20px',
+              backgroundColor: '#f44336',
+              color: 'white',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer',
+              marginLeft: '10px',
+              marginTop: '20px',
             }}
           >
             Clear All
@@ -279,7 +270,7 @@ export default function AbacusQuiz() {
       {modalMessage && (
         <Modal
           message={modalMessage}
-          onClose={() => setModalMessage("")} // Close the modal
+          onClose={() => setModalMessage('')} // Close the modal
         />
       )}
     </>
