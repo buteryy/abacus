@@ -15,7 +15,7 @@ export default function AbacussPractice() {
               fontSize: "30px"
             }
           }>
-            <h1>Abacus Math Workout!</h1>
+            <h1>Mental Math Workout!</h1>
           </div>
           <div className=" abacus-logo-container">
             <img src={abacusLogo} alt="abacus" className="abacus-logo"/>

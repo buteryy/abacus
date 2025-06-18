@@ -17,8 +17,8 @@ function App() {
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="abacus-practice" element={<AbacussPractice />} />
-        <Route path="mental-practice" element={<MentalPratice />} />
-        <Route path="mental-practice/:id" element={<MentalQuiz />} />
+        {/* <Route path="mental-practice" element={<MentalPratice />} /> */}
+        {/* <Route path="mental-practice/:id" element={<MentalQuiz />} /> */}
         <Route path="abacus-practice/:id" element={<AbacusQuiz />} />
         <Route path="abacus-practice/:id/multiplication" element={<SimpleMultiplication />} />
         <Route path="abacus-practice/:id/division" element={<SimpleDivision />} />
